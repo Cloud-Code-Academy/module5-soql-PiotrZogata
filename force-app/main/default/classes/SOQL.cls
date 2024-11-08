@@ -54,9 +54,15 @@ public with sharing class SOQL {
      * @return A list of Contact Ids.
      * Update the corresponding test class and testGetContactIdsByLastName method to cover this method
      */
-    //[public | private ] [static] data_type method_name (input parameters) {
+    public static List<Id> getContactIdsByLastName () {
     //  The body of the method
-    //}
+         List <Contact> contactList = [SELECT Id, Name FROM Contact WHERE LastName = 'Smith' OR LastName = 'Jones'];
+         List<Id> myIdList = new List<Id>();
+         for(Contact con :contactList){
+             myIdList.add(con.Id);
+         }
+         return myIdList;
+    }
 
     /**
      * Question 4
@@ -67,9 +73,11 @@ public with sharing class SOQL {
      * @return A list of Opportunities with important opportunities fields
      * Update the corresponding test class and testGetClosedWonOpportunityCountByAccount method to cover this method
      */
-    //[public | private ] [static] data_type method_name (input parameters) {
+    public static List<Opportunity> getClosedWonOpportunityCountByAccount (Account acc) {
     //  The body of the method
-    //}
+        List <Opportunity> listOfOpp = [SELECT Id, Name, StageName, Account.Id, CloseDate, Amount FROM Opportunity WHERE Account.Id = :acc.Id AND StageName = 'Closed Won'];
+        return listOfOpp;
+    }
 
     /**
      * Question 5
