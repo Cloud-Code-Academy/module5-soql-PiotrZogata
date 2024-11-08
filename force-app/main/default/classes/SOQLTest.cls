@@ -125,7 +125,7 @@ public with sharing class SOQLTest {
         insert accounts;
 
         // Call the method to test
-        Integer accountCount = null; //Replace null with your method call from SOQL class
+        Integer accountCount = SOQL.getAccountCount();
 
         // Assert that the number of accounts returned is correct
         System.assertEquals(numAccounts, accountCount, 'Number of accounts returned is incorrect.');
@@ -142,7 +142,7 @@ public with sharing class SOQLTest {
         insert new List<Task>{testTask1, testTask2, testTask3};
     
         // Call the method to test
-        Map<Id, Task> tasks = null; //Replace null with your method call from SOQL class
+        Map<Id, Task> tasks = SOQL.getTasksDueNextWeek();
     
         // Assert that the number of tasks returned is correct
         System.assertEquals(2, tasks.size(), 'Number of tasks returned is incorrect.');

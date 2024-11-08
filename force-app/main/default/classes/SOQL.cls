@@ -86,9 +86,11 @@ public with sharing class SOQL {
      * @return The Integer count of Account records.
      * Update the corresponding test class and testGetAccountCount method to cover this method
      */
-    //[public | private ] [static] data_type method_name (input parameters) {
-    //  The body of the method
-    //}
+    public static Integer getAccountCount() {
+     //The body of the method
+     Integer val = [SELECT COUNT() FROM Account];
+     return val ;
+    }
 
     /**
      * Question 6
@@ -97,9 +99,15 @@ public with sharing class SOQL {
      * @return A map of Task Ids to Task records.
      * Update the corresponding test class and testGetTasksDueNextWeek method to cover this method
      */
-    //[public | private ] [static] data_type method_name (input parameters) {
+    public static Map<Id, Task> getTasksDueNextWeek () {
     //  The body of the method
-    //}
+        List<Task> listOfTasks = [SELECT Id, Subject, ActivityDate FROM Task WHERE ActivityDate <= NEXT_N_DAYS:7];
+        Map<Id, Task> myMap = new Map<Id, Task>();
+        for(Task tsk :listOfTasks){
+            myMap.put(tsk.Id, tsk);
+        }
+        return myMap;
+    }
 
     /**
      * Question 7
