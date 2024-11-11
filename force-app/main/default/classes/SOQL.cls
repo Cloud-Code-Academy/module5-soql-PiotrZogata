@@ -155,9 +155,10 @@ public with sharing class SOQL {
      * @return A list of Lead records.
      * Update the corresponding test class and testGetLeadsBySourceOrTitle method to cover this method
      */
-    //[public | private ] [static] data_type method_name (input parameters) {
-    //  The body of the method
-    //}    
+    public static  List <Lead> getLeadsBySourceOrTitle(String web, String engineer) {
+        List <Lead> listOfLeads = [SELECT Id, LeadSource, Title, LastName, Phone, Email, Company FROM Lead WHERE (LeadSource like : '%'+web+'%') OR (Title like : '%'+engineer+'%')];
+        return listOfLeads;
+    }    
 
     /**
      * Question 11
@@ -168,7 +169,7 @@ public with sharing class SOQL {
      */
     public static List<String> getContactNamesByAccount(Id accountId) {
         // Create a list to hold the Contact LastNames
-
+    
         // Query the Contacts
         // Loop through each Contact and add the LastName to the list
         //for () {
