@@ -202,7 +202,8 @@ public with sharing class SOQL {
      * @return A list of the first 10 Accounts ordered by Name.
      */
     public static List<Account> getFirstTenAccounts() {
-        return null; // Replace null with the variable you used to store the result
+        List <Account> listOfAccount = [SELECT Id, Name FROM ACCOUNT LIMIT 10];
+                return listOfAccount;
     }
     
     /**
@@ -211,7 +212,8 @@ public with sharing class SOQL {
      * @return A list of Opportunities with an Amount greater than 100,000, ordered by CloseDate, and limited to 5 records.
      */
     public static List<Opportunity> getHighValueOpportunities() {
-        return null; // Replace null with the variable you used to store the result
+        List<Opportunity> listOfOpportunity = [SELECT Id, Name, Closedate, Amount FROM Opportunity WHERE Amount > 100000 Order By Closedate Limit 5];
+        return listOfOpportunity;
     }
     
     /**
