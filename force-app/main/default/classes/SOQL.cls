@@ -222,7 +222,8 @@ public with sharing class SOQL {
      * @return A list of Contacts
      */
     public static List<Contact> getBirthdateContacts() {
-        return null; // Replace null with the variable you used to store the result
+        List<Contact> listOfContacts = [SELECT  Id, Birthdate FROM Contact ORDER BY Birthdate DESC LIMIT 3];
+        return listOfContacts;
     }
     
     /**
@@ -231,7 +232,8 @@ public with sharing class SOQL {
      * @return A list of Cases
      */
     public static List<Case> getCasesWithStatus() {
-        return null; // Replace null with the variable you used to store the result
+        List<Case> listOfCase = [SELECT Id, Status, CreatedDate FROM Case WHERE Status = 'Open' ORDER BY CreatedDate ASC LIMIT 10 OFFSET 5];
+        return listOfCase;
     }
 
     /**
