@@ -369,18 +369,23 @@ public with sharing class SOQL {
      */
     public static void cloneLineItems(Id origOppId, List<Id> cloneOppIds) {
         // Query the original Opportunity Line Items
-
+        List <OpportunityLineItem> oli = [SELECT Id, UnitPrice, Quantity, PricebookEntryId, OpportunityId FROM OpportunityLineItem WHERE OpportunityId = :origOppId];
         // Create a list to hold the new line items
-
+        List<OpportunityLineItem> clonedOli = new List<OpportunityLineItem>();
         // Generate a random number between 1 and 3
-
+        //Integer num = (Math.random() * 3).intValue();
+        Integer randomNumber = (Integer) (Math.random() * (3 - 1 + 1) + 1);
         // Loop through each cloned Opportunity Id
-
-            // Loop through each original line item
-
-                // Clone the original line item and add the random number to the quantity
-
+        // Loop through each original line item
+        // Clone the original line item and add the random number to the quantity
+            for(OpportunityLineItem o: oli){
+                OpportunityLineItem newOli = o.clone(false, false, false, false);
+                newOli.Quantity = o.Quantity + randomNumber;
+                newOli.OpportunityId = cloneOppIds[0];
+                clonedOli.add(newOli);
+            }
         // Insert the new line items
+        insert clonedOli;
     }
     
     /**
@@ -389,8 +394,9 @@ public with sharing class SOQL {
      * Example: getOpportunityDetailsForClosedWon()
      * @return A list of filtered Opportunity
      */
-    public static List<Opportunity> getOpportunityDetailsForClosedWon() {        
-        return null; // Replace null with the variable you used to store the result
+    public static List<Opportunity> getOpportunityDetailsForClosedWon() {    
+        List<Opportunity> oppList = [SELECT Id, Name, Account.Name, Owner.Name FROM Opportunity WHERE StageName = 'Closed Won'];    
+        return oppList;
     }
 
     /**
