@@ -312,11 +312,15 @@ public with sharing class SOQL {
      */
     public static List<Contact> getAccountsWithContactsByState(Id accountId) {
         // Query the Account
-
+        Account acc = [SELECT Id, BillingState FROM Account WHERE Id = :accountId];
         // Store the Account's BillingState
-
+        String biling = acc.BillingState;
         // Query the Contacts
-        return null; // Replace null with the variable you used to store the result
+        List <Contact> contactList = [SELECT Id, MailingState FROM Contact WHERE MailingState LIKE :biling];
+        if (contactList.size() > 0) {
+            return contactList;
+        }
+        return null;
     }
 
     /**
@@ -329,20 +333,30 @@ public with sharing class SOQL {
      */
     public static List<Account> findAccountsByLeadEmailDomains(Set<Id> leadIds) {
         // Query the Leads
-
+        List<Lead> leadSet = [SELECT Id, LastName, Email FROM Lead WHERE Id = :leadIds];
         // Create a set of email domains from the Leads
-
+        Set<String> emailDomains = new Set<String>();
         // Loop through each Lead
-
-            // Get the email from the Lead
-
-            // Check if the email is not null
-
-                // Add the email domain to the set
-
-        
+        for(Lead l :leadSet){
+        // Get the email from the Lead
+        // Check if the email is not null
+            if(l.Email != null){
+                 // Add the email domain to the set
+                 String domain = l.Email.substring(l.Email.indexOf('@') + 1);
+                 emailDomains.add (domain);
+         }
+    }
         // Query the Accounts
-        return null; // Replace null with the variable you used to store the result
+        List<Account> accList = new List<Account>(); 
+        if (!emailDomains.isEmpty()) { 
+             List<String> conditions = new List<String>();
+              for (String domain : emailDomains) {
+                 conditions.add('Website LIKE \'%' + domain + '%\''); 
+                } 
+                 String query = 'SELECT Id, Name, Website FROM Account WHERE ' + String.join(conditions, ' OR ');
+                  accList = Database.query(query); 
+                } 
+                return accList;
     }
 
     /**
