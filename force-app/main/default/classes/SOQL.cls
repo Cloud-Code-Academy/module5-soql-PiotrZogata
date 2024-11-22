@@ -395,7 +395,7 @@ public with sharing class SOQL {
      * @return A list of filtered Opportunity
      */
     public static List<Opportunity> getOpportunityDetailsForClosedWon() {    
-        List<Opportunity> oppList = [SELECT Id, Name, Account.Name, Owner.Name FROM Opportunity WHERE StageName = 'Closed Won'];    
+        List<Opportunity> oppList = [SELECT Id, Name, Account.Name, Account.Id, Owner.Name FROM Opportunity WHERE StageName = 'Closed Won'];    
         return oppList;
     }
 
@@ -406,10 +406,16 @@ public with sharing class SOQL {
      */
     public static void setPrimaryContact() {
         //Use the getOpportunityDetailsForClosedWon() method to get the Opportunities
+        List<Opportunity> oppClosedList = getOpportunityDetailsForClosedWon();
 
         // Create a set of Account Ids from the Opportunities
+        Set<Id> setOfAccId = [SELECT Id FROM Opportunity WHERE Account IN :oppClosedList];
 
         // Query the Contacts
+        
+
+        // Create a map of Account Ids to Contact Ids
+        
 
         // Loop through each Contact and add the Account Id and Contact to the map
         
@@ -418,5 +424,6 @@ public with sharing class SOQL {
                 // Update the Opportunity primary contact from accountToContactMap
 
         // Update the Opportunities
+        
     }
 }
