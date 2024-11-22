@@ -395,7 +395,7 @@ public with sharing class SOQL {
      * @return A list of filtered Opportunity
      */
     public static List<Opportunity> getOpportunityDetailsForClosedWon() {    
-        List<Opportunity> oppList = [SELECT Id, Name, Account.Name, Account.Id, Owner.Name FROM Opportunity WHERE StageName = 'Closed Won'];    
+        List<Opportunity> oppList = [SELECT Id, Name, Account.Name, Owner.Name FROM Opportunity WHERE StageName = 'Closed Won'];    
         return oppList;
     }
 
@@ -409,21 +409,29 @@ public with sharing class SOQL {
         List<Opportunity> oppClosedList = getOpportunityDetailsForClosedWon();
 
         // Create a set of Account Ids from the Opportunities
-        Set<Id> setOfAccId = [SELECT Id FROM Opportunity WHERE Account IN :oppClosedList];
+        Set<Id> setOfAccId = new Set<Id>();
+        for(Opportunity opp : oppClosedList) {
+            setOfAccId.add(opp.Account.Id);
+        }
 
         // Query the Contacts
-        
+        List<Contact> contactList = [SELECT Id, AccountId FROM Contact WHERE AccountId = :setOfAccId];
 
         // Create a map of Account Ids to Contact Ids
-        
+        Map<Id,Id> mapOfAccandCont = new Map<Id,Id>();
 
         // Loop through each Contact and add the Account Id and Contact to the map
+            for(Contact con : contactList) {
+                mapOfAccandCont.put(con.AccountId, con.Id);
+            }
         
         // Loop through each Opportunity
-
-                // Update the Opportunity primary contact from accountToContactMap
-
+            for(Opportunity opp : oppClosedList) {
+                 // Update the Opportunity primary contact from accountToContactMap
+                opp.Primary_Contact__c = mapOfAccandCont.get(opp.Account.Id);
+            }
+               
         // Update the Opportunities
-        
+        update oppClosedList;
     }
 }
