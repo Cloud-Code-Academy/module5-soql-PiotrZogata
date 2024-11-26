@@ -415,7 +415,7 @@ public with sharing class SOQL {
         }
 
         // Query the Contacts
-        List<Contact> contactList = [SELECT Id, AccountId FROM Contact WHERE AccountId = :setOfAccId];
+        List<Contact> contactList = [SELECT Id, AccountId, LastName FROM Contact WHERE AccountId = :setOfAccId ORDER BY LastName DESC];
 
         // Create a map of Account Ids to Contact Ids
         Map<Id,Id> mapOfAccandCont = new Map<Id,Id>();
